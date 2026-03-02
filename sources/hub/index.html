@@ -3,17 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Service Hub</title>
+  <title>App Hub</title>
   <style>
     :root {
-      --bg-1: #0f1b2b;
-      --bg-2: #17365c;
-      --card: rgba(255, 255, 255, 0.1);
-      --line: rgba(255, 255, 255, 0.24);
-      --text: #f7fbff;
-      --muted: #c4d8ee;
-      --btn: #8fd3ff;
-      --btn-text: #07233b;
+      --bg: #f3f7fb;
+      --text: #10253d;
+      --muted: #5c728a;
+      --card: rgba(255, 255, 255, 0.7);
+      --line: rgba(16, 37, 61, 0.12);
+      --btn-top: #ffffff;
+      --btn-bottom: #f3f8ff;
+      --btn-line: rgba(16, 37, 61, 0.12);
+      --accent: #2f7dd6;
+      --shadow: 0 18px 40px rgba(10, 26, 44, 0.12);
+    }
+    :root[data-theme="dark"] {
+      --bg: #0f1724;
+      --text: #e6eef8;
+      --muted: #9cb0c8;
+      --card: rgba(17, 28, 43, 0.72);
+      --line: rgba(173, 198, 224, 0.18);
+      --btn-top: #1a2a3f;
+      --btn-bottom: #122033;
+      --btn-line: rgba(173, 198, 224, 0.2);
+      --accent: #7fc0ff;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
     }
 
     * { box-sizing: border-box; }
@@ -21,88 +35,107 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(90vw 60vh at 95% 10%, #2a5b96 0%, rgba(42, 91, 150, 0) 70%),
-        radial-gradient(70vw 50vh at 0% 100%, #214975 0%, rgba(33, 73, 117, 0) 70%),
-        linear-gradient(140deg, var(--bg-1), var(--bg-2));
+      background: radial-gradient(70vw 45vh at -10% -10%, #d5e8fb 0%, rgba(213, 232, 251, 0) 70%),
+        radial-gradient(60vw 40vh at 110% 110%, #dceefb 0%, rgba(220, 238, 251, 0) 70%),
+        var(--bg);
       color: var(--text);
-      font-family: "Fira Sans", "Helvetica Neue", sans-serif;
+      font-family: "Manrope", "Helvetica Neue", sans-serif;
       display: grid;
       place-items: center;
       padding: 24px;
     }
 
     .panel {
-      width: min(900px, 100%);
+      width: min(980px, 100%);
       border: 1px solid var(--line);
-      border-radius: 20px;
+      border-radius: 24px;
       background: var(--card);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-      padding: 28px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 5vw, 40px);
+      position: relative;
     }
 
     h1 {
       margin: 0 0 6px;
-      font-size: clamp(1.8rem, 4vw, 2.4rem);
-      letter-spacing: 0.02em;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      letter-spacing: -0.02em;
     }
 
     p {
       margin: 0 0 22px;
       color: var(--muted);
-      font-size: 1rem;
+      font-size: 1.05rem;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
     }
 
     .app-link {
       display: block;
       text-decoration: none;
-      border: 1px solid transparent;
-      border-radius: 12px;
-      padding: 12px 14px;
+      border: 1px solid var(--btn-line);
+      border-radius: 14px;
+      padding: 15px 16px;
       font-weight: 700;
-      color: var(--btn-text);
-      background: var(--btn);
-      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--btn-top), var(--btn-bottom));
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, color 160ms ease;
     }
 
     .app-link:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      border-color: #ffffffa8;
+      box-shadow: 0 10px 24px rgba(47, 125, 214, 0.18);
+      border-color: rgba(47, 125, 214, 0.35);
+      color: var(--accent);
     }
 
-    .hint {
-      margin-top: 14px;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    code {
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      border-radius: 6px;
-      padding: 1px 6px;
-      color: #ffffff;
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      border: 1px solid var(--btn-line);
+      background: linear-gradient(180deg, var(--btn-top), var(--btn-bottom));
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font: inherit;
+      font-size: 0.88rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <main class="panel">
-    <h1>VM Service Hub</h1>
-    <p>Central entry page for all apps behind Traefik.</p>
+    <button class="theme-toggle" id="theme-toggle" type="button">Dark mode</button>
+    <h1>VM App Hub</h1>
+    <p>Central entry page for testing various apps/flows.</p>
     <section class="grid" id="apps"></section>
-    <div class="hint">Edit <code>sources/hub/apps.js</code> to add or remove buttons.</div>
   </main>
 
   <script src="/apps.js"></script>
   <script>
+    const root = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const stored = localStorage.getItem('hub-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = stored || (prefersDark ? 'dark' : 'light');
+    root.dataset.theme = initialTheme;
+
+    const setToggleText = () => {
+      toggle.textContent = root.dataset.theme === 'dark' ? 'Light mode' : 'Dark mode';
+    };
+    setToggleText();
+
+    toggle.addEventListener('click', () => {
+      root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('hub-theme', root.dataset.theme);
+      setToggleText();
+    });
+
     const container = document.getElementById('apps');
     const apps = Array.isArray(window.HUB_APPS) ? window.HUB_APPS : [];
 

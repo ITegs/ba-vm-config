@@ -8,13 +8,11 @@ services:
       - ./apps.js:/usr/share/nginx/html/apps.js:ro
     labels:
       - traefik.enable=true
-      - traefik.http.routers.hub-http.rule=Path(`/`)
+      - traefik.http.routers.hub-http.rule=Path(`/`) || Path(`/apps.js`)
       - traefik.http.routers.hub-http.entrypoints=web
-      - traefik.http.routers.hub-http.priority=1
-      - traefik.http.routers.hub-https.rule=Path(`/`)
+      - traefik.http.routers.hub-https.rule=Path(`/`) || Path(`/apps.js`)
       - traefik.http.routers.hub-https.entrypoints=websecure
       - traefik.http.routers.hub-https.tls=true
-      - traefik.http.routers.hub-https.priority=1
       - traefik.http.services.hub.loadbalancer.server.port=80
     networks:
       - proxy
