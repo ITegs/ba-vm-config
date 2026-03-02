@@ -5,3 +5,19 @@ http:
       service: api@internal
       entryPoints:
         - web
+    traefik-dashboard-secure:
+      rule: Host(`traefik.localhost`)
+      service: api@internal
+      entryPoints:
+        - websecure
+      tls: {}
+
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/host:intum:<user>.cert.pem
+        keyFile: /certs/host:intum:<user>.privkey.pem
+  certificates:
+    - certFile: /certs/host:intum:<user>.cert.pem
+      keyFile: /certs/host:intum:<user>.privkey.pem

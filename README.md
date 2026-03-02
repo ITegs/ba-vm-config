@@ -15,8 +15,7 @@ This repository provides a base Docker Compose stack for running multiple servic
 ├── docker-compose.yml
 ├── traefik/
 │   ├── traefik.yml
-│   ├── dynamic.yml
-│   └── acme.json
+│   └── dynamic.yml
 └── sources/
     └── <project>/
         └── docker-compose.yml
@@ -35,6 +34,15 @@ Traefik will listen on:
 - `80` (HTTP)
 - `443` (HTTPS)
 
+## TLS from `/foo`
+
+Traefik mounts host folder `/foo` as `/certs` (read-only) and uses:
+
+- `/foo/fullchain.pem`
+- `/foo/privkey.pem`
+
+If your filenames differ, change `certFile` and `keyFile` in `traefik/dynamic.yml`.
+
 ## Add a project
 
 Create a new folder under `sources/`, for example `sources/app1/`, and add a project-level compose file.
@@ -48,7 +56,8 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.app1.rule=Host(`vm.localhost`) && PathPrefix(`/app1`)
-      - traefik.http.routers.app1.entrypoints=web
+      - traefik.http.routers.app1.entrypoints=websecure
+      - traefik.http.routers.app1.tls=true
       - traefik.http.services.app1.loadbalancer.server.port=80
       - traefik.http.middlewares.app1-strip.stripprefix.prefixes=/app1
       - traefik.http.routers.app1.middlewares=app1-strip
@@ -73,6 +82,7 @@ docker compose up -d
 Current dynamic config exposes the dashboard at:
 
 - `http://traefik.localhost`
+- `https://traefik.localhost`
 
 (From `traefik/dynamic.yml`.)
 
@@ -80,4 +90,4 @@ Current dynamic config exposes the dashboard at:
 
 - Make sure each app uses unique router/service/middleware names in labels.
 - Use `StripPrefix` only if your app expects `/` internally.
-- The ACME email is configured in `traefik/traefik.yml`.
+- This setup uses certificate files from `/foo` and does not use Let's Encrypt.

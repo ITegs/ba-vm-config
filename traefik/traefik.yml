@@ -14,11 +14,3 @@ providers:
   file:
     filename: /etc/traefik/dynamic.yml
     watch: true
-
-certificatesResolvers:
-  letsencrypt:
-    acme:
-      email: your-email@example.com
-      storage: /acme.json
-      httpChallenge:
-        entryPoint: web
