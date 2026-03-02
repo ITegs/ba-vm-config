@@ -7,6 +7,7 @@ This repository provides a base Docker Compose stack for running multiple servic
 - A root compose stack that runs Traefik as reverse proxy.
 - A shared Docker network (`proxy`) for all project stacks.
 - A `sources/` directory where each project keeps its own `docker-compose.yml`.
+- A hub project in `sources/hub` that serves `/` with quick links.
 
 ## Folder structure
 
