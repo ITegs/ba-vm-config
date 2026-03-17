@@ -1,3 +1,24 @@
+# IdP Testing Space
+
+This app hub wraps testing deployments of three open source identity providers: Keycloak, Authentik, Hanko.
+
+## How to use:
+
+1. Open the app Hub at [https://ba-pahle.aet.cit.tum.de](https://ba-pahle.aet.cit.tum.de)
+2. Select the IdP provider you want to test the auth flow.
+3. Click on 'Login' and select 'TUM-Login'
+4. In the official TUM-Login authenticate using your TUM credentials
+5. After successful login you are redirected back to the Client App
+6. You can now register a passkey using the 'Register Passkey' button
+7. Follow the steps of your password manager to save the passkey
+8. After successful passkey registration you can log out from the Client and relogin using the passkey
+
+You can check out the Admin Dashboards of Keycloak/Authentik using the 'Keycloak Admin'/'Authentik Admin' buttons in
+the corresponding client apps. Admin credentials can be found on the Outline page of my thesis.
+
+<details>
+<summary>Proxy Documentation</summary>
+
 # VM Reverse Proxy Setup (Traefik + Per-Project Compose)
 
 This repository provides a base Docker Compose stack for running multiple services behind one endpoint on your VM.
@@ -92,3 +113,5 @@ Current dynamic config exposes the dashboard at:
 - Make sure each app uses unique router/service/middleware names in labels.
 - Use `StripPrefix` only if your app expects `/` internally.
 - This setup uses certificate files from `/foo` and does not use Let's Encrypt.
+
+</details>
